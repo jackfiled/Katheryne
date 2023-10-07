@@ -1,3 +1,55 @@
 ﻿@page "/"
+@using Frontend.Models
 
-<h1>Hello, world!</h1>
+<Layout>
+    <Sider Width="200">
+        
+    </Sider>
+
+    <Content>
+        <div class="chat-zone">
+            <AntList TItem="ChatMessage" DataSource="@_messages" Split="@false">
+                <ListItem>
+                    @if (context.Left)
+                    {
+                        <div>
+                            <MessageBubble Message="context"/>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin-left: auto">
+                            <MessageBubble Message="context"/>
+                        </div>
+                    }
+                </ListItem>
+            </AntList>
+        </div>
+    </Content>
+</Layout>
+
+@code
+{
+    private readonly List<ChatMessage> _messages = new()
+    {
+        new ChatMessage
+        {
+            Sender = "凯瑟琳",
+            Text = "向着星辰和深渊！",
+            Left = true
+        },
+        new ChatMessage
+        {
+            Sender = "凯瑟琳",
+            Text = "欢迎来到冒险家协会。",
+            Left = true
+        },
+        new ChatMessage
+        {
+            Sender = "旅行者",
+            Text = "领取每日委托奖励。",
+            Left = false
+        }
+    };
+
+}
