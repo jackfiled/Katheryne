@@ -1,42 +1,45 @@
 @using Frontend.Models
-@if (Message.Left)
-{
-    <Space Align="start">
-        <SpaceItem>
-            <Avatar Icon="user" Size="2.5rem"/>
-        </SpaceItem>
 
-        <SpaceItem>
-            <div class="bubble">
-                <p style="font-size: 1.1rem">
-                    @Message.Text
-                </p>
-                <p style="font-size: 0.8rem; color: rgb(128,128,128)">
-                    @Message.Sender
-                </p>
-            </div>
-        </SpaceItem>
-    </Space>
-}
-else
-{
-    <Space Align="start">
-        <SpaceItem>
-            <div class="bubble">
-                <p style="font-size: 1.1rem; align-self: flex-end">
-                    @Message.Text
-                </p>
-                <p style="font-size: 0.8rem; align-self: flex-end; color: rgb(128, 128, 128)">
-                    @Message.Sender
-                </p>
-            </div>
-        </SpaceItem>
-        
-        <SpaceItem>
-            <Avatar Icon="user" Size="2.5rem"/>
-        </SpaceItem>
-    </Space>
-}
+<div>
+    @if (Message.Left)
+    {
+        <Space Align="start">
+            <SpaceItem>
+                <Avatar Icon="user" Size="2.5rem"/>
+            </SpaceItem>
+    
+            <SpaceItem>
+                <div class="bubble">
+                    <p style="font-size: 1.1rem">
+                        @Message.Text
+                    </p>
+                    <p style="font-size: 0.8rem; color: rgb(128,128,128)">
+                        @Message.Sender
+                    </p>
+                </div>
+            </SpaceItem>
+        </Space>
+    }
+    else
+    {
+        <Space Align="start">
+            <SpaceItem>
+                <div class="bubble">
+                    <p style="font-size: 1.1rem; align-self: flex-end">
+                        @Message.Text
+                    </p>
+                    <p style="font-size: 0.8rem; align-self: flex-end; color: rgb(128, 128, 128)">
+                        @Message.Sender
+                    </p>
+                </div>
+            </SpaceItem>
+            
+            <SpaceItem>
+                <Avatar Icon="user" Size="2.5rem"/>
+            </SpaceItem>
+        </Space>
+    }
+</div>
 
 @code {
 

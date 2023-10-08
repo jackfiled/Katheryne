@@ -4,4 +4,5 @@
     padding: 5px;
     display: flex;
     flex-direction: column;
+    min-width: 80px;
 }

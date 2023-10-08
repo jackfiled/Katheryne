@@ -1,35 +1,57 @@
 ﻿@page "/"
 @using Frontend.Models
+@inject ILogger<Index> Logger
 
 <Layout>
     <Sider Width="200">
-        
+
     </Sider>
 
     <Content>
-        <div class="chat-zone">
-            <AntList TItem="ChatMessage" DataSource="@_messages" Split="@false">
-                <ListItem>
-                    @if (context.Left)
-                    {
-                        <div>
-                            <MessageBubble Message="context"/>
-                        </div>
-                    }
-                    else
-                    {
-                        <div style="margin-left: auto">
-                            <MessageBubble Message="context"/>
-                        </div>
-                    }
-                </ListItem>
-            </AntList>
+        <div class="content-zone">
+            <div class="chat-zone">
+                <AntList TItem="ChatMessage" DataSource="@_messages" Split="@false">
+                    <ListItem>
+                        @if (context.Left)
+                        {
+                            <div>
+                                <MessageBubble Message="context"/>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="margin-left: auto">
+                                <MessageBubble Message="context"/>
+                            </div>
+                        }
+                    </ListItem>
+                </AntList>
+            </div>
+            <div class="control-zone">
+                <div style="padding: 10px 82px 20px">
+                    <div class="input-zone">
+                        <GridRow>
+                            <GridCol Span="22">
+                                <Input TValue="@string" @bind-Value="@MessageSending"
+                                       Placeholder="输入以对话" Bordered="@false" OnPressEnter="@SendMessageClicked"/>
+                            </GridCol>
+                            <GridCol Span="2">
+                                <Button Type="@ButtonType.Primary" @onclick="@SendMessageClicked">
+                                    发送
+                                </Button>
+                            </GridCol>
+                        </GridRow>
+                    </div>
+                </div>
+            </div>
         </div>
     </Content>
 </Layout>
 
 @code
 {
+    private string MessageSending { get; set; } = string.Empty;
+
     private readonly List<ChatMessage> _messages = new()
     {
         new ChatMessage
@@ -43,13 +65,23 @@
             Sender = "凯瑟琳",
             Text = "欢迎来到冒险家协会。",
             Left = true
-        },
-        new ChatMessage
-        {
-            Sender = "旅行者",
-            Text = "领取每日委托奖励。",
-            Left = false
         }
     };
 
+    private void SendMessageClicked()
+    {
+        if (string.IsNullOrWhiteSpace(MessageSending))
+        {
+            return;
+        }
+
+        _messages.Add(new ChatMessage
+        {
+            Left = false,
+            Sender = "旅行者",
+            Text = MessageSending
+        });
+
+        MessageSending = string.Empty;
+    }
 }
