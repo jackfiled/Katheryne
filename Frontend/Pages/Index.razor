@@ -1,98 +1,16 @@
 ﻿@page "/"
-@using Frontend.Models
-@inject ILogger<Index> Logger
+
 
 <Layout>
     <Sider Width="200">
-
+        
     </Sider>
-
+    
     <Content>
-        <div class="content-zone">
-            <div class="chat-zone">
-                <AntList TItem="ChatMessage" DataSource="@_messages" Split="@false">
-                    <ListItem>
-                        @if (context.Left)
-                        {
-                            <div>
-                                <MessageBubble Message="context"/>
-                            </div>
-                        }
-                        else
-                        {
-                            <div style="margin-left: auto">
-                                <MessageBubble Message="context"/>
-                            </div>
-                        }
-                    </ListItem>
-                </AntList>
-                <div style="height: 200px; width: 100%; flex: none">
-                    
-                </div>
-            </div>
-            
-            <div class="control-zone">
-                <div style="padding: 10px 82px 20px">
-                    <div class="input-zone">
-                        <GridRow>
-                            <GridCol Span="22">
-                                <Input TValue="@string" @bind-Value="@MessageSending"
-                                       Placeholder="输入以对话" Bordered="@false" OnPressEnter="@SendMessageClicked"/>
-                            </GridCol>
-                            <GridCol Span="2">
-                                <Button Type="@ButtonType.Primary" @onclick="@SendMessageClicked">
-                                    发送
-                                </Button>
-                            </GridCol>
-                        </GridRow>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Chat />
     </Content>
 </Layout>
 
-@code
-{
-    private string MessageSending { get; set; } = string.Empty;
-
-    private readonly List<ChatMessage> _messages = new()
-    {
-        new ChatMessage
-        {
-            Sender = "凯瑟琳",
-            Text = "向着星辰和深渊！",
-            Left = true
-        },
-        new ChatMessage
-        {
-            Sender = "凯瑟琳",
-            Text = "欢迎来到冒险家协会。",
-            Left = true
-        }
-    };
-
-    private void SendMessageClicked()
-    {
-        if (string.IsNullOrWhiteSpace(MessageSending))
-        {
-            return;
-        }
-
-        _messages.Add(new ChatMessage
-        {
-            Left = false,
-            Sender = "旅行者",
-            Text = MessageSending
-        });
-
-        MessageSending = string.Empty;
-
-        _messages.Add(new ChatMessage
-        {
-            Left = true,
-            Sender = "凯瑟琳",
-            Text = "对不起，做不到。"
-        });
-    }
+@code {
+    
 }
