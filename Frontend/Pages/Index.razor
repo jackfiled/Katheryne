@@ -26,7 +26,11 @@
                         }
                     </ListItem>
                 </AntList>
+                <div style="height: 200px; width: 100%; flex: none">
+                    
+                </div>
             </div>
+            
             <div class="control-zone">
                 <div style="padding: 10px 82px 20px">
                     <div class="input-zone">
@@ -83,5 +87,12 @@
         });
 
         MessageSending = string.Empty;
+
+        _messages.Add(new ChatMessage
+        {
+            Left = true,
+            Sender = "凯瑟琳",
+            Text = "对不起，做不到。"
+        });
     }
 }

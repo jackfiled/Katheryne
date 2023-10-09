@@ -8,6 +8,8 @@
     flex-direction: column;
     width: 100%;
     min-height: calc(100vh - 64px);
+    max-height: calc(100vh - 64px);
+    padding: 10px;
     position: relative;
     background: linear-gradient(180deg,
     #f5f4f6,
@@ -17,8 +19,10 @@
 
 .chat-zone {
     min-width: 100%;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
     position: relative;
+    height: 100%;
     overflow-y: auto;
 }
 
@@ -28,19 +32,7 @@
     position: absolute;
     background-color: #b5bddf;
     display: block;
-}
-
-.control-zone::before {
-    content: "";
-    pointer-events: none;
-    height: 14px;
-    min-width: inherit;
-    top: -14px;
-    display: block;
-    position: absolute;
-    background: linear-gradient(180deg,
-    rgb(187, 193, 223),
-    #b5bddf);
+    box-shadow: 3px 0 0 #b5bddf;
 }
 
 .input-zone {
