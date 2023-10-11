@@ -10,6 +10,6 @@ public interface IChatRobot
     public IEnumerable<string> OnChatStart();
 
     public IEnumerable<string> OnChatStop();
-    
-    
+
+    public IEnumerable<string> ChatNext(string input);
 }

@@ -1,5 +1,7 @@
 ﻿@page "/"
 @using Frontend.Models
+@using Katheryne.Abstractions
+@inject IServiceProvider ServiceProvider
 
 
 <Layout>
@@ -16,7 +18,7 @@
                         <ListItem OnClick="@(() => ChangeChatClicked(context.Guid))">
                             <ListItemMeta>
                                 <TitleTemplate>
-                                    @if (@context.Selected)
+                                    @if (context.Selected)
                                     {
                                         <div class="selected-chat-name">
                                             <p style="margin: 5px">@context.Title</p>
@@ -38,7 +40,7 @@
     </Sider>
 
     <Content>
-        <ChatZone Messages="@_chatDictionary[_currentGuid].Messages"/>
+        <ChatZone Messages="@_chatDictionary[_currentGuid].Messages" Robot="@_chatDictionary[_currentGuid].Robot"/>
     </Content>
 </Layout>
 
@@ -49,18 +51,7 @@
 
     protected override void OnInitialized()
     {
-        var chat = new Chat
-        {
-            Title = $"对话：{_chatDictionary.Count + 1}"
-        };
-        
-        chat.Messages.Add(new ChatMessage
-        {
-            Sender = "凯瑟琳",
-            Left = true,
-            Text = "向着星辰和深渊！欢迎来到冒险家协会。"
-        });
-        chat.Selected = true;
+        Chat chat = GetInitChat();
         
         _chatDictionary.Add(chat.Guid, chat);
         _currentGuid = chat.Guid;
@@ -68,21 +59,9 @@
 
     private void CreateChatClicked()
     {
-        var chat = new Chat
-        {
-            Title = $"对话：{_chatDictionary.Count + 1}"
-        };
-        
-        chat.Messages.Add(new ChatMessage
-        {
-            Sender = "凯瑟琳",
-            Left = true,
-            Text = "向着星辰和深渊！欢迎来到冒险家协会。"
-        });
+        Chat chat = GetInitChat();
         
         _chatDictionary.Add(chat.Guid, chat);
-        
-        // 切换到新建的对话
         _chatDictionary[_currentGuid].Selected = false;
         _currentGuid = chat.Guid;
         _chatDictionary[_currentGuid].Selected = true;
@@ -93,5 +72,27 @@
         _chatDictionary[_currentGuid].Selected = false;
         _currentGuid = guid;
         _chatDictionary[_currentGuid].Selected = true;
+    }
+
+    private Chat GetInitChat()
+    {
+        var chat = new Chat
+        {
+            Title = $"对话：{_chatDictionary.Count + 1}",
+            Robot = ServiceProvider.GetRequiredService<IChatRobot>()
+        };
+
+        foreach (string answer in chat.Robot.OnChatStart())
+        {
+            chat.Messages.Add(new ChatMessage
+            {
+                Sender = chat.Robot.RobotName,
+                Left = true,
+                Text = answer
+            });
+        }
+        chat.Selected = true;
+
+        return chat;
     }
 }

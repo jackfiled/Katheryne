@@ -1,4 +1,5 @@
 @using Frontend.Models
+@using Katheryne.Abstractions
 
 <div class="content-zone">
     <div class="chat-zone">
@@ -49,6 +50,9 @@
     [Parameter]
     public List<ChatMessage> Messages { get; set; } = null!;
 
+    [Parameter]
+    public IChatRobot Robot { get; set; } = null!;
+
     private void SendMessageClicked()
     {
         if (string.IsNullOrWhiteSpace(MessageSending))
@@ -63,13 +67,16 @@
             Text = MessageSending
         });
 
-        MessageSending = string.Empty;
-
-        Messages.Add(new ChatMessage
+        foreach (string answer in Robot.ChatNext(MessageSending))
         {
-            Left = true,
-            Sender = "凯瑟琳",
-            Text = "对不起，做不到。"
-        });
+            Messages.Add(new ChatMessage
+            {
+                Left = true,
+                Sender = Robot.RobotName,
+                Text = answer
+            });
+        }
+        
+        MessageSending = string.Empty;
     }
 }
