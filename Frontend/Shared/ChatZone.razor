@@ -2,7 +2,7 @@
 
 <div class="content-zone">
     <div class="chat-zone">
-        <AntList TItem="ChatMessage" DataSource="@_messages" Split="@false">
+        <AntList TItem="ChatMessage" DataSource="@Messages" Split="@false">
             <ListItem>
                 @if (context.Left)
                 {
@@ -46,21 +46,8 @@
 {
     private string MessageSending { get; set; } = string.Empty;
 
-    private readonly List<ChatMessage> _messages = new()
-    {
-        new ChatMessage
-        {
-            Sender = "凯瑟琳",
-            Text = "向着星辰和深渊！",
-            Left = true
-        },
-        new ChatMessage
-        {
-            Sender = "凯瑟琳",
-            Text = "欢迎来到冒险家协会。",
-            Left = true
-        }
-    };
+    [Parameter]
+    public List<ChatMessage> Messages { get; set; } = null!;
 
     private void SendMessageClicked()
     {
@@ -69,7 +56,7 @@
             return;
         }
 
-        _messages.Add(new ChatMessage
+        Messages.Add(new ChatMessage
         {
             Left = false,
             Sender = "旅行者",
@@ -78,7 +65,7 @@
 
         MessageSending = string.Empty;
 
-        _messages.Add(new ChatMessage
+        Messages.Add(new ChatMessage
         {
             Left = true,
             Sender = "凯瑟琳",

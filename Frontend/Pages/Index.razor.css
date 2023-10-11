@@ -1,0 +1,27 @@
+.chat-control-zone {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.selected-chat-name {
+    display: flex;
+    justify-content: center;
+    margin: 5px 5px 5px;
+    padding: 5px 0 5px;
+    border-radius: 5px;
+    background-color: #bcc9e2;
+}
+
+.chat-name {
+    display: flex;
+    justify-content: center;
+    margin: 5px 5px 5px;
+    padding: 5px 0 5px;
+    border-radius: 5px;
+    background-color: #5d92e4;
+}
+
+.chat-list {
+    overflow-y: auto;
+}

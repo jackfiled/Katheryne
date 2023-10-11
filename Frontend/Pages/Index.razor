@@ -1,16 +1,97 @@
 ﻿@page "/"
+@using Frontend.Models
 
 
 <Layout>
-    <Sider Width="200">
-        
+    <Sider Width="200" Theme="SiderTheme.Light">
+        <div class="chat-control-zone">
+            <div>
+                <Button Type="@ButtonType.Primary" Size="large" @onclick="@CreateChatClicked">
+                    新建对话
+                </Button>
+
+                <div class="chat-list">
+                    <AntList TItem="@Chat" DataSource="@_chatDictionary.Values"
+                             Split="@false">
+                        <ListItem OnClick="@(() => ChangeChatClicked(context.Guid))">
+                            <ListItemMeta>
+                                <TitleTemplate>
+                                    @if (@context.Selected)
+                                    {
+                                        <div class="selected-chat-name">
+                                            <p style="margin: 5px">@context.Title</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="chat-name">
+                                            <p style="margin: 5px">@context.Title</p>
+                                        </div>
+                                    }
+                                </TitleTemplate>
+                            </ListItemMeta>
+                        </ListItem>
+                    </AntList>
+                </div>
+            </div>
+        </div>
     </Sider>
-    
+
     <Content>
-        <Chat />
+        <ChatZone Messages="@_chatDictionary[_currentGuid].Messages"/>
     </Content>
 </Layout>
 
 @code {
-    
+    private readonly Dictionary<Guid, Chat> _chatDictionary = new();
+
+    private Guid _currentGuid;
+
+    protected override void OnInitialized()
+    {
+        var chat = new Chat
+        {
+            Title = $"对话：{_chatDictionary.Count + 1}"
+        };
+        
+        chat.Messages.Add(new ChatMessage
+        {
+            Sender = "凯瑟琳",
+            Left = true,
+            Text = "向着星辰和深渊！欢迎来到冒险家协会。"
+        });
+        chat.Selected = true;
+        
+        _chatDictionary.Add(chat.Guid, chat);
+        _currentGuid = chat.Guid;
+    }
+
+    private void CreateChatClicked()
+    {
+        var chat = new Chat
+        {
+            Title = $"对话：{_chatDictionary.Count + 1}"
+        };
+        
+        chat.Messages.Add(new ChatMessage
+        {
+            Sender = "凯瑟琳",
+            Left = true,
+            Text = "向着星辰和深渊！欢迎来到冒险家协会。"
+        });
+        
+        _chatDictionary.Add(chat.Guid, chat);
+        
+        // 切换到新建的对话
+        _chatDictionary[_currentGuid].Selected = false;
+        _currentGuid = chat.Guid;
+        _chatDictionary[_currentGuid].Selected = true;
+    }
+
+    private void ChangeChatClicked(Guid guid)
+    {
+        _chatDictionary[_currentGuid].Selected = false;
+        _currentGuid = guid;
+        _chatDictionary[_currentGuid].Selected = true;
+    }
 }
