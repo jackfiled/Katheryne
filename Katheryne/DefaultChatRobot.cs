@@ -12,15 +12,16 @@ public class DefaultChatRobot : IChatRobot
         _logger = logger;
     }
     
-    public string RobotName => "凯瑟琳";
+    public string RobotName => "Default";
     
     public IEnumerable<string> OnChatStart()
     {
         _logger.LogDebug("Start default chat robot.");
         return new[]
         {
-            "向着星辰与深渊！",
-            "欢迎来到冒险家协会。"
+            "坏了，被你发现默认机器人了。",
+            "使用这个粪机器人，怎么能得高分呢？",
+            "必须要出重拳！"
         };
     }
 
@@ -29,7 +30,7 @@ public class DefaultChatRobot : IChatRobot
         _logger.LogDebug("End default chat robot.");
         return new[]
         {
-            "再见，感谢您对协会做出的贡献，冒险家。"
+            "我不到啊。"
         };
     }
 
@@ -38,7 +39,7 @@ public class DefaultChatRobot : IChatRobot
         _logger.LogDebug("Robot receive message: \"{}\".", input);
         return new[]
         {
-            "暂时不支持该功能，请联系维护人员。"
+            "啊对对对。"
         };
     }
 }
