@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using Frontend.Models
-@using Katheryne.Abstractions
-@inject IServiceProvider ServiceProvider
+@using Katheryne.Services
+@inject KatheryneChatRobotFactory ChatRobotFactory
 
 
 <Layout>
@@ -51,8 +51,24 @@
 
     protected override void OnInitialized()
     {
-        Chat chat = GetInitChat();
+        ChatRobotFactory.SetGrammar(@"
+                                    robotName: 凯瑟琳
+                                    stages:
+                                      - name: start
+                                        answer: 向着星辰和深渊！欢迎来到冒险家协会。
+                                        transformers:
+                                          - pattern: .*?
+                                            nextStageName: running
+                                        
+                                      - name: running
+                                        answer: 对不起，做不到。
+                                        transformers:
+                                          - pattern: .*?
+                                            nextStageName: running
+                                    beginStageName: start
+                                    ");
         
+        Chat chat = GetInitChat();
         _chatDictionary.Add(chat.Guid, chat);
         _currentGuid = chat.Guid;
     }
@@ -79,7 +95,7 @@
         var chat = new Chat
         {
             Title = $"对话：{_chatDictionary.Count + 1}",
-            Robot = ServiceProvider.GetRequiredService<IChatRobot>()
+            Robot = ChatRobotFactory.GetRobot()
         };
 
         foreach (string answer in chat.Robot.OnChatStart())
