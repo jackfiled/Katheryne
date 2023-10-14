@@ -30,3 +30,7 @@
 body {
     overflow: hidden;
 }
+
+.monaco-editor-container {
+    min-height: 100%;
+}

@@ -1,0 +1,19 @@
+@page "/editor"
+
+<Layout>
+    <Content>
+        <div class="editor-zone">
+            <StandaloneCodeEditor ConstructionOptions="GetEditorConstructionOptions" Id="my-editor-instance"/>
+        </div>
+    </Content>
+</Layout>
+
+@code {
+    private StandaloneEditorConstructionOptions GetEditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            Language = "yaml"
+        };
+    }
+}
