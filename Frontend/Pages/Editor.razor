@@ -1,19 +1,93 @@
 @page "/editor"
+@using Katheryne.Services
+@using Katheryne.Exceptions
+@inject NavigationManager Navigation
+@inject KatheryneChatRobotFactory RobotFactory
 
 <Layout>
     <Content>
         <div class="editor-zone">
-            <StandaloneCodeEditor ConstructionOptions="GetEditorConstructionOptions" Id="my-editor-instance"/>
+            <div class="control-zone">
+                <Space Size="@("0")">
+                    <SpaceItem>
+                        <Button Type="@ButtonType.Text">
+                            退出
+                        </Button>
+                    </SpaceItem>
+
+                    <SpaceItem>
+                        <Button Type="@ButtonType.Text" @onclick="@CompileGrammarClicked">
+                            编译
+                        </Button>
+                    </SpaceItem>
+                </Space>
+            </div>
+            
+            <StandaloneCodeEditor Id="code-editor" @ref="@_editor"
+                                  ConstructionOptions="GetEditorConstructionOptions"/>
+
+            <div class="logging-zone">
+                <AntList TItem="@string" DataSource="@_logs" Split="@false" @ref="@_logList">
+                    <p style="margin-bottom: 0">@context</p>
+                </AntList>
+            </div>
         </div>
     </Content>
 </Layout>
 
 @code {
+    private StandaloneCodeEditor _editor = null!;
+    private AntList<string> _logList = null!;
+
+    private readonly List<string> _logs = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Log("编辑器加载完成");
+        await base.OnInitializedAsync();
+    }
+
     private StandaloneEditorConstructionOptions GetEditorConstructionOptions(StandaloneCodeEditor editor)
     {
+        string grammarText;
+        if (!string.IsNullOrEmpty(RobotFactory.GrammarText))
+        {
+            Log("加载文法...");
+            grammarText = RobotFactory.GrammarText;
+        }
+        else
+        {
+            Log("未设置文法");
+            grammarText = string.Empty;
+        }
+        
         return new StandaloneEditorConstructionOptions
         {
-            Language = "yaml"
+            Language = "yaml",
+            Value = grammarText
         };
     }
+
+    private async Task CompileGrammarClicked()
+    {
+        string grammarText = await _editor.GetValue();
+
+        try
+        {
+            Log("编译文法...");
+            RobotFactory.SetGrammar(grammarText);
+            Log("编译成功!");
+        }
+        catch (GrammarException e)
+        {
+            Log($"编译文法遇到错误：{e.Message}");
+        }
+    }
+
+    private void Log(string message)
+    {
+        _logs.Add($"{DateTime.Now:HH:mm:ss} {message}");
+        StateHasChanged();
+    }
+
 }

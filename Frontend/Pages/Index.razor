@@ -51,23 +51,6 @@
 
     protected override void OnInitialized()
     {
-        ChatRobotFactory.SetGrammar(@"
-                                    robotName: 凯瑟琳
-                                    stages:
-                                      - name: start
-                                        answer: 向着星辰和深渊！欢迎来到冒险家协会。
-                                        transformers:
-                                          - pattern: .*?
-                                            nextStageName: running
-                                        
-                                      - name: running
-                                        answer: 对不起，做不到。
-                                        transformers:
-                                          - pattern: .*?
-                                            nextStageName: running
-                                    beginStageName: start
-                                    ");
-        
         Chat chat = GetInitChat();
         _chatDictionary.Add(chat.Guid, chat);
         _currentGuid = chat.Guid;

@@ -14,6 +14,8 @@ public class KatheryneChatRobotFactory
 
     private Grammar? _grammar;
 
+    public string GrammarText { get; private set; } = string.Empty;
+
     public KatheryneChatRobotFactory(YamlDeserializerFactory deserializerFactory,
         ILogger<KatheryneChatRobotFactory> factoryLogger,
         ILogger<KatheryneChatRobot> robotLogger,
@@ -28,6 +30,7 @@ public class KatheryneChatRobotFactory
     public void SetGrammar(string grammarText)
     {
         _factoryLogger.LogInformation("Receive new grammar: {}.", grammarText);
+        GrammarText = grammarText;
         IDeserializer deserializer = _deserializerFactory.GetDeserializer();
 
         LexicalModel model = deserializer.Deserialize<LexicalModel>(grammarText);

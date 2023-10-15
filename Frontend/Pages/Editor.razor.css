@@ -1,3 +1,13 @@
 .editor-zone {
-    min-height: calc(100vh - 64px);
+    height: calc(100vh - 64px);
+}
+
+.control-zone {
+    height: 5%;
+    padding: 2px;
+}
+
+.logging-zone {
+    height: 15%;
+    overflow-y: auto;
 }

@@ -9,6 +9,6 @@ public static class ServiceCollectionExtensions
     {
         collection.AddSingleton<YamlDeserializerFactory>();
         collection.AddSingleton<DefaultChatRobot>();
-        collection.AddScoped<KatheryneChatRobotFactory>();
+        collection.AddSingleton<KatheryneChatRobotFactory>();
     }
 }
