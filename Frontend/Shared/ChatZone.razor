@@ -1,6 +1,7 @@
 @using Frontend.Models
 @using Katheryne.Abstractions
 @inject IJSRuntime JsRuntime
+@inject IMessageService MessageService
 
 <div class="content-zone">
     <div class="chat-zone" id="chat-scroll-zone">
@@ -115,6 +116,12 @@
 
     private void SetUsernameOkClicked()
     {
+        if (string.IsNullOrEmpty(_username))
+        {
+            MessageService.Warning("昵称不能为空");
+            return;
+        }
+        
         _setUsernameVisible = false;
     }
 
