@@ -1,8 +1,9 @@
 @using Frontend.Models
 @using Katheryne.Abstractions
+@inject IJSRuntime JsRuntime
 
 <div class="content-zone">
-    <div class="chat-zone">
+    <div class="chat-zone" id="chat-scroll-zone">
         <AntList TItem="ChatMessage" DataSource="@Messages" Split="@false">
             <ListItem>
                 @if (context.Left)
@@ -74,6 +75,15 @@
         }
         
         base.OnInitialized();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            JsRuntime.InvokeVoidAsync("scrollToSection");
+        }
+        base.OnAfterRender(firstRender);
     }
 
     private void SendMessageClicked()
