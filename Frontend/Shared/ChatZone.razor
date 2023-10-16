@@ -41,17 +41,40 @@
             </div>
         </div>
     </div>
+    
+    <Modal Title="设置您的昵称"
+           Visible="@_setUsernameVisible"
+           OnOk="@SetUsernameOkClicked"
+           OnCancel="@SetUsernameCancelClicked">
+        <div>
+            <Input TValue="@string" Placeholder="用户名" 
+                   @bind-Value="@_username"
+                   OnPressEnter="@SetUsernameOkClicked"/>
+        </div>
+    </Modal>
 </div>
 
 @code
 {
     private string MessageSending { get; set; } = string.Empty;
+    private string _username = string.Empty;
+    private bool _setUsernameVisible = false;
 
     [Parameter]
     public List<ChatMessage> Messages { get; set; } = null!;
 
     [Parameter]
     public IChatRobot Robot { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        if (string.IsNullOrEmpty(_username))
+        {
+            _setUsernameVisible = true;
+        }
+        
+        base.OnInitialized();
+    }
 
     private void SendMessageClicked()
     {
@@ -63,7 +86,7 @@
         Messages.Add(new ChatMessage
         {
             Left = false,
-            Sender = "旅行者",
+            Sender = string.IsNullOrEmpty(_username) ? "default" : _username,
             Text = MessageSending
         });
 
@@ -78,5 +101,15 @@
         }
         
         MessageSending = string.Empty;
+    }
+
+    private void SetUsernameOkClicked()
+    {
+        _setUsernameVisible = false;
+    }
+
+    private void SetUsernameCancelClicked()
+    {
+        _setUsernameVisible = false;
     }
 }

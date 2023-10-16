@@ -5,7 +5,9 @@
     {
         <Space Align="start">
             <SpaceItem>
-                <Avatar Icon="user" Size="2.5rem"/>
+                <Avatar Style="background-color: #5d92e4" Size="2.5rem">
+                    @Message.Sender.First()
+                </Avatar>
             </SpaceItem>
 
             <SpaceItem>
@@ -37,7 +39,9 @@
             </SpaceItem>
 
             <SpaceItem>
-                <Avatar Icon="user" Size="2.5rem"/>
+                <Avatar Style="background-color: #5d92e4" Size="2.5rem">
+                    @Message.Sender.First()
+                </Avatar>
             </SpaceItem>
         </Space>
     }
