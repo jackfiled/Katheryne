@@ -31,7 +31,7 @@ body {
     overflow: hidden;
 }
 
-.monaco-editor-container {
+#code-editor {
     min-height: 80%;
     margin: 5px;
 }
