@@ -29,10 +29,10 @@ public class KatheryneChatRobotFactory
     }
 
     /// <summary>
-    /// ÉèÖÃµ±Ç°»úÆ÷ÈËÊ¹ÓÃµÄÎÄ·¨
+    /// è®¾ç½®å½“å‰æœºå™¨äººä½¿ç”¨çš„æ–‡æ³•
     /// </summary>
-    /// <param name="grammarText">ÎÄ·¨×Ö·û´®</param>
-    /// <exception cref="GrammarException">±àÒëÎÄ·¨Ê§°ÜÅ×³öµÄÒì³£</exception>
+    /// <param name="grammarText">æ–‡æ³•å­—ç¬¦ä¸²</param>
+    /// <exception cref="GrammarException">ç¼–è¯‘æ–‡æ³•å¤±è´¥æŠ›å‡ºçš„å¼‚å¸¸</exception>
     public void SetGrammar(string grammarText)
     {
         _factoryLogger.LogInformation("Receive new grammar: {}.", grammarText);

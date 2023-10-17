@@ -1,19 +1,15 @@
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Katheryne;
+using Frontend;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddAntDesign();
 
 builder.Services.AddKatheryne();
 
-WebApplication app = builder.Build();
+WebAssemblyHost app = builder.Build();
 
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
-
-app.Run();
+await app.RunAsync();
