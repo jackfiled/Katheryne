@@ -1,3 +1,4 @@
+using Katheryne.Abstractions;
 using Katheryne.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,6 @@ public static class ServiceCollectionExtensions
     {
         collection.AddSingleton<YamlDeserializerFactory>();
         collection.AddSingleton<DefaultChatRobot>();
-        collection.AddSingleton<KatheryneChatRobotFactory>();
+        collection.AddSingleton<IChatRobotFactory, KatheryneChatRobotFactory>();
     }
 }

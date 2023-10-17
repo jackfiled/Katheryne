@@ -6,7 +6,7 @@ using YamlDotNet.Serialization;
 
 namespace Katheryne.Services;
 
-public class KatheryneChatRobotFactory
+public class KatheryneChatRobotFactory : IChatRobotFactory
 {
     private readonly YamlDeserializerFactory _deserializerFactory;
     private readonly ILogger<KatheryneChatRobotFactory> _factoryLogger;
