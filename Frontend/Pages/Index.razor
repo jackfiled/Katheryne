@@ -1,7 +1,11 @@
 ﻿@page "/"
 @using Frontend.Models
+@using Frontend.Services
+@using Katheryne
 @using Katheryne.Abstractions
 @inject IChatRobotFactory ChatRobotFactory
+@inject GrammarStorageService GrammarStorage
+@inject DefaultChatRobot DefaultRobot
 
 
 <Layout>
@@ -40,7 +44,7 @@
     </Sider>
 
     <Content>
-        <ChatZone Messages="@_chatDictionary[_currentGuid].Messages" Robot="@_chatDictionary[_currentGuid].Robot"/>
+        <ChatZone Messages="@GetChatMessages()" Robot="@GetChatRobot()"/>
     </Content>
 </Layout>
 
@@ -49,11 +53,15 @@
 
     private Guid _currentGuid;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await GrammarStorage.RestoreGrammar();
+        
         Chat chat = GetInitChat();
         _chatDictionary.Add(chat.Guid, chat);
         _currentGuid = chat.Guid;
+        
+        await base.OnInitializedAsync();
     }
 
     private void CreateChatClicked()
@@ -93,5 +101,15 @@
         chat.Selected = true;
 
         return chat;
+    }
+
+    private List<ChatMessage> GetChatMessages()
+    {
+        return _chatDictionary.TryGetValue(_currentGuid, out Chat? chat) ? chat.Messages : new List<ChatMessage>();
+    }
+
+    private IChatRobot GetChatRobot()
+    {
+        return _chatDictionary.TryGetValue(_currentGuid, out Chat? chat) ? chat.Robot : DefaultRobot;
     }
 }
