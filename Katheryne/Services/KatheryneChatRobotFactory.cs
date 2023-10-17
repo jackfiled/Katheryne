@@ -1,4 +1,5 @@
 using Katheryne.Abstractions;
+using Katheryne.Exceptions;
 using Katheryne.Models;
 using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
@@ -27,13 +28,26 @@ public class KatheryneChatRobotFactory
         _defaultChatRobot = defaultChatRobot;
     }
 
+    /// <summary>
+    /// 设置当前机器人使用的文法
+    /// </summary>
+    /// <param name="grammarText">文法字符串</param>
+    /// <exception cref="GrammarException">编译文法失败抛出的异常</exception>
     public void SetGrammar(string grammarText)
     {
         _factoryLogger.LogInformation("Receive new grammar: {}.", grammarText);
         GrammarText = grammarText;
         IDeserializer deserializer = _deserializerFactory.GetDeserializer();
 
-        LexicalModel model = deserializer.Deserialize<LexicalModel>(grammarText);
+        LexicalModel model;
+        try
+        {
+            model = deserializer.Deserialize<LexicalModel>(grammarText);
+        }
+        catch (Exception ex)
+        {
+            throw new GrammarException("Failed to parse lexical model.", ex);
+        }
         _grammar = new Grammar(new GrammarTree(model), model.RobotName, model.BeginStageName);
     }
 

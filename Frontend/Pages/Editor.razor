@@ -10,7 +10,7 @@
             <div class="control-zone">
                 <Space Size="@("0")">
                     <SpaceItem>
-                        <Button Type="@ButtonType.Text">
+                        <Button Type="@ButtonType.Text" OnClick="@QuitButtontClicked">
                             退出
                         </Button>
                     </SpaceItem>
@@ -28,7 +28,9 @@
 
             <div class="logging-zone">
                 <AntList TItem="@string" DataSource="@_logs" Split="@false" @ref="@_logList">
-                    <p style="margin-bottom: 0">@context</p>
+                    <ListItem class="logging-item">
+                        <p>@context</p>
+                    </ListItem>
                 </AntList>
             </div>
         </div>
@@ -60,7 +62,7 @@
             Log("未设置文法");
             grammarText = string.Empty;
         }
-        
+
         return new StandaloneEditorConstructionOptions
         {
             Language = "yaml",
@@ -84,10 +86,14 @@
         }
     }
 
+    private void QuitButtontClicked()
+    {
+        Navigation.NavigateTo("/", replace: true);
+    }
+
     private void Log(string message)
     {
         _logs.Add($"{DateTime.Now:HH:mm:ss} {message}");
         StateHasChanged();
-    }
-
+    }   
 }

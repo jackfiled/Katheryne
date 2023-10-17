@@ -10,4 +10,9 @@
 .logging-zone {
     height: 15%;
     overflow-y: auto;
+    margin-bottom: 5px;
+}
+
+.logging-item {
+    padding: 0 0 0;
 }
