@@ -1,0 +1,84 @@
+<Modal Title="DSL语法说明"
+       Visible="@_helpVisible"
+       OnOk="@(() => _helpVisible = false)"
+       OnCancel="@(() => _helpVisible = false)">
+    <div>
+        <Title Level="3">语法说明</Title>
+        <Paragraph>
+            凯瑟琳DSL使用和<Text Code>YAML</Text>类似的语法来编写逻辑。语法通过规定机器人的多个阶段和在阶段之间的
+            迁移关系来描述聊天机器人的聊天过程。机器人在启动时处在一个特定的阶段，通过正则表达式匹配用户的输入迁移到下一个阶段
+            并输出对应的内容。
+        </Paragraph>
+
+        <Paragraph>
+            文法拥有三个顶级属性：
+
+            <ul>
+                <li>
+                    <Text Code>robotName</Text> 字符串类型，规定了机器人的名称；
+                </li>
+
+                <li>
+                    <Text Code>stages</Text> Stage类型的数组，规定了机器人的各个阶段；
+                </li>
+
+                <li>
+                    <Text Code>beginStageName</Text> 字符串类型，规定了机器人初始阶段，会自动输出该阶段的输出内容。
+                </li>
+            </ul>
+        </Paragraph>
+
+        <Paragraph>
+            Stage类型拥有三个属性：
+
+            <ul>
+                <li>
+                    <Text Code>name</Text> 阶段的名称，是阶段<b>唯一的标识符</b>；
+                </li>
+                <li>
+                    <Text Code>transformers</Text> Transformer类型的数组，指定该阶段的迁移规则；
+                </li>
+                <li>
+                    <Text Code>answer</Text> 该阶段的输出内容。
+                </li>
+            </ul>
+        </Paragraph>
+
+        <Paragraph>
+            Transformer类型拥有两个属性：
+
+            <ul>
+                <li>
+                    <Text Code>pattern</Text> 匹配用户输入的正则表达式；
+                </li>
+                <li>
+                    <Text Code>nextStageName</Text> 匹配成功之后需要迁移到的阶段名。
+                </li>
+            </ul>
+        </Paragraph>
+
+        <Paragraph>
+            在编译阶段编译器会执行如下检查：
+
+            <ul>
+                <li>
+                    <Text Code>transformers</Text> 中的 <Text Code>nextStageName</Text>指定的阶段是否定义；
+                </li>
+
+                <li>
+                    <Text Code>beginStageName</Text> 指定的阶段是否定义。
+                </li>
+            </ul>
+        </Paragraph>
+    </div>
+</Modal>
+
+@code {
+    private bool _helpVisible;
+
+    public void Show()
+    {
+        _helpVisible = true;
+        StateHasChanged();
+    }
+}

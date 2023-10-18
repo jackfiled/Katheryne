@@ -28,7 +28,7 @@
                             </Button>
                         </Tooltip>
                     </SpaceItem>
-                    
+
                     <SpaceItem>
                         <Tooltip Placement="@Placement.Bottom"
                                  Title="清除浏览器缓存中的文法">
@@ -36,6 +36,12 @@
                                 清除
                             </Button>
                         </Tooltip>
+                    </SpaceItem>
+
+                    <SpaceItem>
+                        <Button Type="@ButtonType.Text" @onclick="HelpButtonClicked">
+                            帮助
+                        </Button>
                     </SpaceItem>
                 </Space>
             </div>
@@ -54,9 +60,12 @@
     </Content>
 </Layout>
 
+<GrammarHelp @ref="@_grammarHelp"/>
+
 @code {
     private StandaloneCodeEditor _editor = null!;
     private AntList<string> _logList = null!;
+    private GrammarHelp _grammarHelp = null!;
 
     private readonly List<string> _logs = new();
 
@@ -65,6 +74,7 @@
         Log("编辑器加载完成");
         if (await GrammarStorage.RestoreGrammar())
         {
+            await _editor.SetValue(RobotFactory.GrammarText);
             Log("从浏览器中恢复成功");
         }
         else
@@ -109,6 +119,11 @@
     {
         await GrammarStorage.RemoveGrammar();
         Log("清除浏览器中的语法成功");
+    }
+
+    private void HelpButtonClicked()
+    {
+        _grammarHelp.Show();
     }
 
     private void Log(string message)
