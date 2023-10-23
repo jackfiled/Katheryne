@@ -6,12 +6,12 @@ internal class InnerStage
 
     public List<InnerTransformer> Transformers { get; } = new();
         
-    public string Answer { get; }
+    public StringFormatter Answer { get; }
 
     public InnerStage(Stage stage)
     {
         Name = stage.Name;
-        Answer = stage.Answer;
+        Answer = new StringFormatter(stage.Answer);
 
         foreach (Transformer transformer in stage.Transformers)
         {
