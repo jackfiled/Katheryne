@@ -1,8 +1,7 @@
+using System.Text.RegularExpressions;
 using Katheryne.Abstractions;
 using Katheryne.Models;
-using Katheryne.Services;
 using Microsoft.Extensions.Logging;
-using YamlDotNet.Serialization;
 
 namespace Katheryne;
 
@@ -28,7 +27,7 @@ public class KatheryneChatRobot : IChatRobot
     {
         return new[]
         {
-            _grammarTree[_currentStage]
+            _grammarTree[_currentStage].Answer
         };
     }
 
@@ -42,13 +41,51 @@ public class KatheryneChatRobot : IChatRobot
 
     public IEnumerable<string> ChatNext(string input)
     {
-        _logger.LogDebug("Receive input {} on stage {}.", input, _currentStage);
-        (_currentStage, string answer) = _grammarTree.NextStage(_currentStage, input);
-        _logger.LogDebug("Change stage to {}.", _currentStage);
+        List<string> result = new();
 
-        return new[]
+        foreach (InnerTransformer transformer in _grammarTree[_currentStage].Transformers)
         {
-            answer
-        };
+            if (transformer.Pattern is null)
+            {
+                continue;
+            }
+            
+            Match match = transformer.Pattern.Match(input);
+
+            if (match.Success)
+            {
+                _currentStage = transformer.NextStage;
+                result.Add(_grammarTree[_currentStage].Answer);
+                _logger.LogDebug("Moving to stage {}.", _currentStage);
+            }
+        }
+        
+        EmptyTransform(result);
+        return result;
+    }
+
+    /// <summary>
+    /// 进行当前阶段的空转移
+    /// </summary>
+    /// <param name="result">存放输出回答的列表</param>
+    private void EmptyTransform(List<string> result)
+    {
+        var flag = true;
+        while (flag)
+        {
+            flag = false;
+            foreach (InnerTransformer transformer in _grammarTree[_currentStage].Transformers)
+            {
+                if (string.IsNullOrEmpty(transformer.RowPattern))
+                {
+                    flag = true;
+                    _currentStage = transformer.NextStage;
+                    result.Add(_grammarTree[_currentStage].Answer);
+                    
+                    _logger.LogDebug("Moving to stage {} with empty transform.", _currentStage);
+                    break;
+                }
+            }
+        }
     }
 }
