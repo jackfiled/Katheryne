@@ -56,7 +56,8 @@ public class KatheryneChatRobot : IChatRobot
             {
                 _currentStage = transformer.NextStage;
                 result.Add(_grammarTree[_currentStage].Answer);
-                _logger.LogDebug("Moving to stage {}.", _currentStage);
+                _logger.LogInformation("Moving to stage {} on input {}.", _currentStage, input);
+                break;
             }
         }
         
@@ -82,7 +83,7 @@ public class KatheryneChatRobot : IChatRobot
                     _currentStage = transformer.NextStage;
                     result.Add(_grammarTree[_currentStage].Answer);
                     
-                    _logger.LogDebug("Moving to stage {} with empty transform.", _currentStage);
+                    _logger.LogInformation("Moving to stage {} with empty transform.", _currentStage);
                     break;
                 }
             }

@@ -37,6 +37,38 @@ public class YamlDeserializerTests
         
         Assert.Contains(actual.Stages, s => s.Name == "start");
         Assert.Contains(actual.Stages, s => s.Name == "running");
+
+        Stage stage = actual.Stages[1];
+        Assert.Equal("running", stage.Name);
+        Assert.Contains(stage.Transformers, t => t.NextStageName == "running");
+    }
+
+    [Fact]
+    public void DeserializerTest2()
+    {
+        const string document =
+            """
+            robotName: 凯瑟琳
+            stages:
+              - name: start
+                answer: 向着星辰和深渊！欢迎来到冒险家协会。
+                transformers:
+                  - pattern: 
+                    nextStageName: running
+                  - pattern: .*?
+                    nextStageName: running
+            beginStageName: start
+            """;
+        
+        IDeserializer deserializer = _factory.GetDeserializer();
+        LexicalModel actual = deserializer.Deserialize<LexicalModel>(document);
+
+        Assert.Contains(actual.Stages, s => s.Name == "start");
+
+        Stage stage = actual.Stages[0];
+
+        Assert.Contains(stage.Transformers, s => string.IsNullOrEmpty(s.Pattern));
+        Assert.Contains(stage.Transformers, s => s.Pattern == ".*?");
     }
     
 }
