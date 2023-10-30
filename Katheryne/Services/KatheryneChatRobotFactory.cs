@@ -13,6 +13,8 @@ public class KatheryneChatRobotFactory : IChatRobotFactory
     private readonly ILogger<KatheryneChatRobot> _robotLogger;
     private readonly DefaultChatRobot _defaultChatRobot;
 
+    private readonly Dictionary<string, IParamsModule> _modules = new();
+
     private Grammar? _grammar;
 
     public string GrammarText { get; private set; } = string.Empty;
@@ -48,7 +50,8 @@ public class KatheryneChatRobotFactory : IChatRobotFactory
         {
             throw new GrammarException("Failed to parse lexical model.", ex);
         }
-        _grammar = new Grammar(new GrammarTree(model), model.RobotName, model.BeginStageName);
+        _grammar = new Grammar(new GrammarTree(model, _modules),
+            model.RobotName, model.BeginStageName);
     }
 
     public IChatRobot GetRobot()

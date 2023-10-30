@@ -1,3 +1,4 @@
+using Katheryne.Abstractions;
 using Katheryne.Exceptions;
 
 namespace Katheryne.Models;
@@ -6,11 +7,11 @@ public class GrammarTree
 {
     private readonly Dictionary<string, InnerStage> _stages = new();
 
-    public GrammarTree(LexicalModel model)
+    public GrammarTree(LexicalModel model, Dictionary<string, IParamsModule> modules)
     {
         foreach (Stage stage in model.Stages)
         {
-            _stages[stage.Name] = new InnerStage(stage);
+            _stages[stage.Name] = new InnerStage(stage, modules);
         }
 
         if (!Validate(model))

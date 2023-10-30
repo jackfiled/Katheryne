@@ -59,14 +59,16 @@ public class KatheryneChatRobot : IChatRobot
                 if (answer.IsFormat)
                 {
                     string temp = answer.Format(match.Groups);
-                    _logger.LogInformation("Format answer {} to {}.", answer.RowString, temp);
+                    _logger.LogInformation("Format answer {} to {}.",
+                        answer.RowString, temp);
                     result.Add(temp);
                 }
                 else
                 {
                     result.Add(answer.RowString);
                 }
-                _logger.LogInformation("Moving to stage {} on input {}.", _currentStage, input);
+                _logger.LogInformation("Moving to stage {} on input {}.",
+                    _currentStage, input);
                 break;
             }
         }
@@ -93,7 +95,8 @@ public class KatheryneChatRobot : IChatRobot
                     _currentStage = transformer.NextStage;
                     result.Add(_grammarTree[_currentStage].Answer.RowString);
                     
-                    _logger.LogInformation("Moving to stage {} with empty transform.", _currentStage);
+                    _logger.LogInformation("Moving to stage {} with empty transform.",
+                        _currentStage);
                     break;
                 }
             }

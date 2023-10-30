@@ -1,3 +1,5 @@
+using Katheryne.Abstractions;
+
 namespace Katheryne.Models;
 
 internal class InnerStage
@@ -8,10 +10,10 @@ internal class InnerStage
         
     public StringFormatter Answer { get; }
 
-    public InnerStage(Stage stage)
+    public InnerStage(Stage stage, Dictionary<string, IParamsModule> modules)
     {
         Name = stage.Name;
-        Answer = new StringFormatter(stage.Answer);
+        Answer = new StringFormatter(stage.Answer, modules);
 
         foreach (Transformer transformer in stage.Transformers)
         {
