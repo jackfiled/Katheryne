@@ -53,13 +53,17 @@
 
     private Guid _currentGuid;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await GrammarStorage.RestoreGrammar();
-        
-        Chat chat = GetInitChat();
-        _chatDictionary.Add(chat.Guid, chat);
-        _currentGuid = chat.Guid;
+        if (firstRender)
+        {
+            await GrammarStorage.RestoreGrammar();
+
+            Chat chat = GetInitChat();
+            _chatDictionary.Add(chat.Guid, chat);
+            _currentGuid = chat.Guid;
+            StateHasChanged();
+        }
         
         await base.OnInitializedAsync();
     }

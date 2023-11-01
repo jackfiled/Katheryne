@@ -84,6 +84,25 @@
         await base.OnInitializedAsync();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Log("编辑器加载完成");
+            if (await GrammarStorage.RestoreGrammar())
+            {
+                await _editor.SetValue(RobotFactory.GrammarText);
+                Log("从浏览器中恢复成功");
+            }
+            else
+            {
+                Log("尚未设置语法");
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private StandaloneEditorConstructionOptions GetEditorConstructionOptions(StandaloneCodeEditor editor)
     {
         return new StandaloneEditorConstructionOptions
