@@ -13,9 +13,9 @@ public class KatheryneChatRobotFactory : IChatRobotFactory
     private readonly ILogger<KatheryneChatRobot> _robotLogger;
     private readonly DefaultChatRobot _defaultChatRobot;
 
-    private readonly Dictionary<string, IParamsModule> _modules = new();
-
     private Grammar? _grammar;
+
+    public Dictionary<string, IParamsModule> Modules { get; } = new();
 
     public string GrammarText { get; private set; } = string.Empty;
 
@@ -37,7 +37,7 @@ public class KatheryneChatRobotFactory : IChatRobotFactory
     /// <exception cref="GrammarException">编译文法失败抛出的异常</exception>
     public void SetGrammar(string grammarText)
     {
-        _factoryLogger.LogInformation("Receive new grammar: {}.", grammarText);
+        _factoryLogger.LogDebug("Receive new grammar: {}.", grammarText);
         GrammarText = grammarText;
         IDeserializer deserializer = _deserializerFactory.GetDeserializer();
 
@@ -50,7 +50,7 @@ public class KatheryneChatRobotFactory : IChatRobotFactory
         {
             throw new GrammarException("Failed to parse lexical model.", ex);
         }
-        _grammar = new Grammar(new GrammarTree(model, _modules),
+        _grammar = new Grammar(new GrammarTree(model, Modules),
             model.RobotName, model.BeginStageName);
     }
 

@@ -54,6 +54,7 @@ public class StringFormatterTests
         Regex regex = new(".*?");
         Match match = regex.Match("Test Input");
 
+        Assert.True(formatter.IsFormat);
         Assert.Equal("Test Hello, Katheryne", formatter.Format(match.Groups));
     }
 

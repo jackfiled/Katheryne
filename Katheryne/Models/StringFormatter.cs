@@ -27,7 +27,7 @@ public class StringFormatter
         GetFormatTags();
     }
 
-    public bool IsFormat => _formatTags.Count != 0;
+    public bool IsFormat => _formatTags.Count != 0 || _params.Count != 0;
 
     public string RowString => _originString;
 
