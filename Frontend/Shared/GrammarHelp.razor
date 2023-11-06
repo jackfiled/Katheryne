@@ -58,6 +58,38 @@
         </Paragraph>
 
         <Paragraph>
+            在<Text Code>Stage</Text>类型的<Text Code>answer</Text>属性中支持两种特殊的语法：
+
+            <ul>
+                <li>
+                    利用上文中设置的迁移正则表达式中提取用户的输入作为输出的一部分，使用<Text Code>$number</Text>
+                    作为标识符指定提取到的信息应当插入在何处，<Text Code>number</Text>是匹配成功的列表索引。<br/>
+
+                    例如，使用正则表达式<Text Code>(.*?)</Text>迁移到拥有如下
+                    <Text Code>answer: 感谢冒险家完成了“$1”, 这是你的奖励。</Text>属性的阶段，
+                    会将用户的输入完全替换到<Text Code>$1</Text>所在的位置。
+                </li>
+
+                <li>
+                    调用系统中预先定义的API作为回答，使用<Text Code>@@module/method</Text>调用。<br/>
+                    例如：利用<Text Code>@@weather/text</Text>调用weather模块的text方法获得当前北京的天气信息。
+                </li>
+            </ul>
+        </Paragraph>
+
+        <Paragraph>
+            当前程序中提供的API模块有：
+
+            <ul>
+                <li>
+                    Weather: <br/>
+                    text: 获得当前天气文本 <br/>
+                    temp: 获得当前温度
+                </li>
+            </ul>
+        </Paragraph>
+
+        <Paragraph>
             在编译阶段编译器会执行如下检查：
 
             <ul>
@@ -67,6 +99,10 @@
 
                 <li>
                     <Text Code>beginStageName</Text> 指定的阶段是否定义。
+                </li>
+
+                <li>
+                    调用的模块和方法是否存在。
                 </li>
             </ul>
         </Paragraph>
