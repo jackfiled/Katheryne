@@ -11,4 +11,4 @@ jobs:
 
       - run: cp ./Frontend/Dockerfile .
 
-      - run: docker build . -t git.rrricardo.top/jackfiled/frontend:latest
+      - run: docker build . -t git.rrricardo.top/jackfiled/katheryne:latest
