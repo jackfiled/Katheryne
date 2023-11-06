@@ -1,0 +1,14 @@
+name: Build Frontend Docker Image
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: https://git.rrricardo.top/actions/checkout@v3
+
+      - run: dotnet publish ./Frontend/Frontend.csproj -c Release -o publish
+
+      - run: cp ./Frontend/Dockerfile .
+
+      - run: docker build . -t git.rrricardo.top/jackfiled/frontend:latest
