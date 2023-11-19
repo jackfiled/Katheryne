@@ -1,11 +1,12 @@
 using Blazored.LocalStorage;
+using Frontend.Components;
 using Katheryne;
 using Frontend.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 
 builder.Services.AddAntDesign();
 builder.Services.AddBlazoredLocalStorage();
@@ -16,7 +17,9 @@ WebApplication app = builder.Build();
 
 app.UseStaticFiles();
 app.UseRouting();
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.UseAntiforgery();
+
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
 
 await app.RunAsync();

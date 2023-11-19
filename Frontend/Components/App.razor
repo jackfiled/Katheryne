@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <base href="/"/>
+    <link href="css/site.css" rel="stylesheet"/>
+    <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet" />
+    <link href="Frontend.styles.css" rel="stylesheet">
+    <HeadOutlet @rendermode="@InteractiveServer" />
+</head>
+<body>
+<Routes @rendermode="@InteractiveServer" />
+
+<text>
+    An error has occurred. This application may not response until reloaded.
+</text>
+
+<script src="_content/AntDesign/js/ant-design-blazor.js"></script>
+<script src="_content/BlazorMonaco/jsInterop.js"></script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+<script src="_framework/blazor.web.js"></script>
+<script src="js/helper.js"></script>
+</body>
+</html>
