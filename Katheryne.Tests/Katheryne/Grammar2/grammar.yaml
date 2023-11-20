@@ -1,0 +1,36 @@
+robotName: 凯瑟琳
+stages:
+  - name: running
+    answer: 向着星辰和深渊！欢迎来到冒险家协会。
+    transformers:
+      - pattern: 领取每日委托奖励
+        nextStageName: daily-task-question
+      - pattern: 你好|您好|[Hh]ello
+        nextStageName: hello
+      - pattern: .*?
+        nextStageName: unknown
+
+  - name: daily-task-question
+    answer: 冒险家今日完成的任务是？
+    transformers:
+      - pattern: (.*)
+        nextStageName: daily-task
+
+  - name: daily-task
+    answer: 感谢冒险家完成了“$1”, 这是你的奖励。
+    transformers:
+      - pattern:
+        nextStageName: running
+
+  - name: hello
+    answer: 你好，我是冒险家协会的接待员凯瑟琳。
+    transformers:
+      - pattern:
+        nextStageName: running
+
+  - name: unknown
+    answer: 对不起，做不到。
+    transformers:
+      - pattern:
+        nextStageName: running
+beginStageName: running

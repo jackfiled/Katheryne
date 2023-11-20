@@ -1,4 +1,5 @@
 using Katheryne.Abstractions;
+using Katheryne.Modules;
 using Katheryne.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -46,7 +47,57 @@ public class KatheryneRobotTests
         ValidateOutput(_katheryneChatRobotFactory.GetRobot(), file);
     }
 
-    private void ValidateOutput(IChatRobot robot, InputOutputFile file)
+    [Fact]
+    public void KatheryneRobotTest2()
+    {
+        InputOutputFile file = new("Grammar2");
+        StreamReader reader = new(Path.Combine(file.PrefixPath, "grammar.yaml"));
+        _katheryneChatRobotFactory.SetGrammar(reader.ReadToEnd());
+
+        ValidateOutput(_katheryneChatRobotFactory.GetRobot(), file);
+    }
+
+    [Fact]
+    public void WeatherModuleTest()
+    {
+        const string grammar =
+            """
+            robotName: 凯瑟琳
+            stages:
+              - name: running
+                answer: 向着星辰和深渊！欢迎来到冒险家协会。
+                transformers:
+                  - pattern: .*?天气|气温.*?
+                    nextStageName: weather
+                  - pattern: .*?
+                    nextStageName: running
+              
+              - name: weather
+                answer: 今天璃月港的天气是@weather/text，气温是@weather/temp。
+                transformers:
+                  - pattern: 
+                    nextStageName: running
+            beginStageName: running
+            """;
+
+        ModuleBase weatherModule = new WeatherModule();
+
+        _katheryneChatRobotFactory.Modules.Clear();
+        _katheryneChatRobotFactory.Modules.Add(weatherModule.ModuleName, weatherModule);
+        _katheryneChatRobotFactory.SetGrammar(grammar);
+
+        IChatRobot robot = _katheryneChatRobotFactory.GetRobot();
+        IEnumerable<string> answers = robot.ChatNext("今天天气怎么样？");
+
+        Assert.Contains(answers, answer =>
+            answer == $"今天璃月港的天气是{weatherModule["text"]}，气温是{weatherModule["temp"]}。");
+
+        answers = robot.ChatNext("今天气温是多少度？");
+        Assert.Contains(answers, answer =>
+            answer == $"今天璃月港的天气是{weatherModule["text"]}，气温是{weatherModule["temp"]}。");
+    }
+
+    private static void ValidateOutput(IChatRobot robot, InputOutputFile file)
     {
         foreach (string output in robot.OnChatStart())
         {
