@@ -3,6 +3,9 @@ using Katheryne.Abstractions;
 
 namespace Katheryne.Modules;
 
+/// <summary>
+/// 参数模块实现基类
+/// </summary>
 public abstract class ModuleBase : IParamsModule
 {
     protected readonly Dictionary<string, Func<string>> Functions = new();

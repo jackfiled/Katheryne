@@ -3,7 +3,7 @@ using Katheryne.Exceptions;
 namespace Katheryne.Abstractions;
 
 /// <summary>
-/// 聊天机器人接口
+/// 聊天机器人工厂接口
 /// </summary>
 public interface IChatRobotFactory
 {

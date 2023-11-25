@@ -27,10 +27,21 @@ public class StringFormatter
         GetFormatTags();
     }
 
+    /// <summary>
+    /// 字符串是否需要进行格式化
+    /// </summary>
     public bool IsFormat => _formatTags.Count != 0 || _params.Count != 0;
 
+    /// <summary>
+    /// 原始字符串
+    /// </summary>
     public string RowString => _originString;
 
+    /// <summary>
+    /// 格式化字符串
+    /// </summary>
+    /// <param name="collection">正则表达式匹配的结果列表</param>
+    /// <returns>格式化之后的字符串</returns>
     public string Format(GroupCollection collection)
     {
         var result = new string(_originString);
@@ -54,6 +65,10 @@ public class StringFormatter
         return result;
     }
 
+    /// <summary>
+    /// 解析字符串中需要格式化的标签
+    /// </summary>
+    /// <exception cref="GrammarException">文法中调用的模块不存在</exception>
     private void GetFormatTags()
     {
         List<int> tagIndices = new();

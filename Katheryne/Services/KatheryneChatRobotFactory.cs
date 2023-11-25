@@ -6,6 +6,9 @@ using YamlDotNet.Serialization;
 
 namespace Katheryne.Services;
 
+/// <summary>
+/// Katheryne 聊天机器人工厂实现
+/// </summary>
 public class KatheryneChatRobotFactory : IChatRobotFactory
 {
     private readonly YamlDeserializerFactory _deserializerFactory;

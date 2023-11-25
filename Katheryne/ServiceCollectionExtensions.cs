@@ -8,6 +8,9 @@ namespace Katheryne;
 
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// 在服务集合中添加Katheryne DSL解释机器人服务
+    /// </summary>
     public static void AddKatheryne(this IServiceCollection collection)
     {
         collection.AddSingleton<YamlDeserializerFactory>();

@@ -3,6 +3,9 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace Katheryne.Services;
 
+/// <summary>
+/// YAML 反序列化对象工厂
+/// </summary>
 public class YamlDeserializerFactory
 {
     private readonly DeserializerBuilder _builder;

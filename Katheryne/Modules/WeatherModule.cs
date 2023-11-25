@@ -4,6 +4,9 @@ using Katheryne.Exceptions;
 
 namespace Katheryne.Modules;
 
+/// <summary>
+/// 提供天气服务的模块
+/// </summary>
 public class WeatherModule : ModuleBase
 {
     private static readonly HttpClient s_httpClient = new();

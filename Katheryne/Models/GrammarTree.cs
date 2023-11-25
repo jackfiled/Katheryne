@@ -3,6 +3,9 @@ using Katheryne.Exceptions;
 
 namespace Katheryne.Models;
 
+/// <summary>
+/// 语法树
+/// </summary>
 public class GrammarTree
 {
     private readonly Dictionary<string, InnerStage> _stages = new();
