@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Katheryne.Abstractions;
+using Katheryne.Exceptions;
 using Katheryne.Models;
 using Microsoft.Extensions.Logging;
 
@@ -83,6 +84,10 @@ public class KatheryneChatRobot : IChatRobot
     /// <param name="result">存放输出回答的列表</param>
     private void EmptyTransform(List<string> result)
     {
+        // 经过的状态集合, 避免递归循环
+        HashSet<string> movedStages = new();
+        movedStages.Add(_currentStage);
+
         var flag = true;
         while (flag)
         {
@@ -93,6 +98,16 @@ public class KatheryneChatRobot : IChatRobot
                 {
                     flag = true;
                     _currentStage = transformer.NextStage;
+                    if (movedStages.Contains(_currentStage))
+                    {
+                        // 发生递归调用
+                        throw new GrammarException("Recursively transform detected!");
+                    }
+                    else
+                    {
+                        movedStages.Add(_currentStage);
+                    }
+
                     result.Add(_grammarTree[_currentStage].Answer.RowString);
                     
                     _logger.LogDebug("Moving to stage {} with empty transform.",
