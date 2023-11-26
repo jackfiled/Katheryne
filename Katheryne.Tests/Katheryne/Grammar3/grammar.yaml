@@ -1,0 +1,22 @@
+robotName: 啊准
+stages:
+  - name: start
+    answer: 我是啊准，一个可以查询天气的机器人。
+    transformers:
+      - pattern: .*?天气|气温.*?
+        nextStageName: weather
+      - pattern: .*?
+        nextStageName: running
+
+  - name: running
+    answer: 对不起，做不到。
+    transformers:
+      - pattern:
+        nextStageName: running
+
+  - name: weather
+    answer: 今天北京市的天气是@weather/text，气温是@weather/temp 摄氏度。
+    transformers:
+      - pattern:
+        nextStageName: running
+beginStageName: start

@@ -1,6 +1,8 @@
 using Katheryne.Abstractions;
+using Katheryne.Exceptions;
 using Katheryne.Modules;
 using Katheryne.Services;
+using Katheryne.Tests.Mocks;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -55,6 +57,21 @@ public class KatheryneRobotTests
         _katheryneChatRobotFactory.SetGrammar(reader.ReadToEnd());
 
         ValidateOutput(_katheryneChatRobotFactory.GetRobot(), file);
+    }
+
+    [Fact]
+    public void RecursivelyExceptionTest()
+    {
+        IParamsModule weatherModule = new MockWeatherModule();
+        _katheryneChatRobotFactory.Modules.Clear();
+        _katheryneChatRobotFactory.Modules.Add(weatherModule.ModuleName, weatherModule);
+
+        InputOutputFile file = new("Grammar3");
+        StreamReader reader = new(Path.Combine(file.PrefixPath, "grammar.yaml"));
+        _katheryneChatRobotFactory.SetGrammar(reader.ReadToEnd());
+
+        Assert.Throws<GrammarException>(
+            () => ValidateOutput(_katheryneChatRobotFactory.GetRobot(), file));
     }
 
     [Fact]
