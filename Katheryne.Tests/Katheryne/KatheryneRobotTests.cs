@@ -75,6 +75,20 @@ public class KatheryneRobotTests
     }
 
     [Fact]
+    public void KatheryneRobotTest4()
+    {
+        IParamsModule weatherModule = new MockWeatherModule();
+        _katheryneChatRobotFactory.Modules.Clear();
+        _katheryneChatRobotFactory.Modules.Add(weatherModule.ModuleName, weatherModule);
+
+        InputOutputFile file = new("Grammar4");
+        StreamReader reader = new(Path.Combine(file.PrefixPath, "grammar.yaml"));
+        _katheryneChatRobotFactory.SetGrammar(reader.ReadToEnd());
+
+        ValidateOutput(_katheryneChatRobotFactory.GetRobot(), file);
+    }
+
+    [Fact]
     public void WeatherModuleTest()
     {
         const string grammar =
