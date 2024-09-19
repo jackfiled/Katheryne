@@ -1,5 +1,23 @@
 # 基于领域特定语言的客服机器人设计与实现
 
+## 启动
+
+安装[.NET SDK](https://dotnet.microsoft.com/en-us/download)。克隆仓库，进入`Frontend`文件夹启动项目。
+
+```shell
+git clone https://github.com/jackfiled/Katheryne.git
+cd Frontend
+dotnet run
+```
+
+## Gallery
+
+![image-20240919211237542](./README/image-20240919211237542.png)
+
+<img src="./README/image-20240919211341189.png" alt="image-20240919211341189" style="zoom:50%;" />
+
+![image-20240919211529669](./README/image-20240919211529669.png)
+
 ## 需求分析
 
 项目要求实现一个面向客服机器人领域的领域特定语言（DSL）解释器。
